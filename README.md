@@ -68,7 +68,7 @@ class ServerController extends Controller{
 
 DOCUMENTATION 
 ---------------
-See documentation of Yii2 and PEAR2 Net Router OS, and Mikrorik Manual.
+See documentation of Yii2, PEAR2 Net Router OS, and Mikrorik Manual.
 
 - Yii2 Docs http://www.yiiframework.com/doc-2.0/
 - PEAR2 Net RouterOS https://github.com/pear2/Net_RouterOS/wiki
