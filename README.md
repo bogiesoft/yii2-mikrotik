@@ -56,7 +56,7 @@ class ServerController extends Controller{
             $host   = 'your Mikrotik IP or Hostname';
             $user   = 'your Mikrotik User';
             $pass   = 'your Mikrotik Pass';
-            $connect = new Mikrotik\Client($server,$user,$pass);
+            $connect = new Mikrotik\Client($host,$user,$pass);
             if($connect){
                   //your code 
             }else{
