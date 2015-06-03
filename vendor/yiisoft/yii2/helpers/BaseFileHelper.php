@@ -33,6 +33,7 @@ class BaseFileHelper
      */
     public static $mimeMagicFile = '@yii/helpers/mimeTypes.php';
 
+
     /**
      * Normalizes a file/directory path.
      * The normalization does the following work:
@@ -257,7 +258,7 @@ class BaseFileHelper
 
         $handle = opendir($src);
         if ($handle === false) {
-            throw new InvalidParamException('Unable to open directory: ' . $src);
+            throw new InvalidParamException("Unable to open directory: $src");
         }
         if (!isset($options['basePath'])) {
             // this should be done only once
@@ -304,7 +305,7 @@ class BaseFileHelper
         if (!is_dir($dir)) {
             return;
         }
-        if (!is_link($dir) || isset($options['traverseSymlinks']) && $options['traverseSymlinks']) {
+        if (isset($options['traverseSymlinks']) && $options['traverseSymlinks'] || !is_link($dir)) {
             if (!($handle = opendir($dir))) {
                 return;
             }
@@ -364,7 +365,7 @@ class BaseFileHelper
     public static function findFiles($dir, $options = [])
     {
         if (!is_dir($dir)) {
-            throw new InvalidParamException('The dir argument must be a directory.');
+            throw new InvalidParamException("The dir argument must be a directory: $dir");
         }
         $dir = rtrim($dir, DIRECTORY_SEPARATOR);
         if (!isset($options['basePath'])) {
@@ -375,7 +376,7 @@ class BaseFileHelper
         $list = [];
         $handle = opendir($dir);
         if ($handle === false) {
-            throw new InvalidParamException('Unable to open directory: ' . $dir);
+            throw new InvalidParamException("Unable to open directory: $dir");
         }
         while (($file = readdir($handle)) !== false) {
             if ($file === '.' || $file === '..') {
@@ -423,7 +424,7 @@ class BaseFileHelper
             }
         }
 
-        if (!is_dir($path) && !empty($options['only'])) {
+        if (!empty($options['only']) && !is_dir($path)) {
             if (($except = self::lastExcludeMatchingFromList($options['basePath'], $path, $options['only'])) !== null) {
                 // don't check PATTERN_NEGATIVE since those entries are not prefixed with !
                 return true;
@@ -446,6 +447,7 @@ class BaseFileHelper
      * @param integer $mode the permission to be set for the created directory.
      * @param boolean $recursive whether to create parent directories if they do not exist.
      * @return boolean whether the directory is created successfully
+     * @throws \yii\base\Exception if the directory could not be created.
      */
     public static function createDirectory($path, $mode = 0775, $recursive = true)
     {
@@ -456,8 +458,12 @@ class BaseFileHelper
         if ($recursive && !is_dir($parentDir)) {
             static::createDirectory($parentDir, $mode, true);
         }
-        $result = mkdir($path, $mode);
-        chmod($path, $mode);
+        try {
+            $result = mkdir($path, $mode);
+            chmod($path, $mode);
+        } catch(\Exception $e) {
+            throw new \yii\base\Exception("Failed to create directory '$path': " . $e->getMessage(), $e->getCode(), $e);
+        }
 
         return $result;
     }

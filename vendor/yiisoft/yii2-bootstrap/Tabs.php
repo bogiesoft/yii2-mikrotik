@@ -31,6 +31,10 @@ use yii\helpers\Html;
  *             'options' => ['id' => 'myveryownID'],
  *         ],
  *         [
+ *             'label' => 'Example',
+ *             'url' => 'http://www.example.com',
+ *         ],
+ *         [
  *             'label' => 'Dropdown',
  *             'items' => [
  *                  [
@@ -63,6 +67,8 @@ class Tabs extends Widget
      * - headerOptions: array, optional, the HTML attributes of the tab header.
      * - linkOptions: array, optional, the HTML attributes of the tab header link tags.
      * - content: string, optional, the content (HTML) of the tab pane.
+     * - url: string, optional, an external URL. When this is specified, clicking on this tab will bring
+     *   the browser to this URL. This option is available since version 2.0.4.
      * - options: array, optional, the HTML attributes of the tab pane container.
      * - active: boolean, optional, whether the item tab header and pane should be visible or not.
      * - items: array, optional, can be used instead of `content` to specify a dropdown items
@@ -101,6 +107,12 @@ class Tabs extends Widget
      * @var string specifies the Bootstrap tab styling.
      */
     public $navType = 'nav-tabs';
+    /**
+     * @var boolean whether to render the `tab-content` container and its content. You may set this property
+     * to be false so that you can manually render `tab-content` yourself in case your tab contents are complex.
+     * @since 2.0.1
+     */
+    public $renderTabContent = true;
 
 
     /**
@@ -117,8 +129,8 @@ class Tabs extends Widget
      */
     public function run()
     {
-        echo $this->renderItems();
         $this->registerPlugin('tab');
+        return $this->renderItems();
     }
 
     /**
@@ -136,7 +148,7 @@ class Tabs extends Widget
         }
 
         foreach ($this->items as $n => $item) {
-            if (!isset($item['label'])) {
+            if (!array_key_exists('label', $item)) {
                 throw new InvalidConfigException("The 'label' option is required.");
             }
             $encodeLabel = isset($item['encode']) ? $item['encode'] : $this->encodeLabels;
@@ -148,7 +160,7 @@ class Tabs extends Widget
                 $label .= ' <b class="caret"></b>';
                 Html::addCssClass($headerOptions, 'dropdown');
 
-                if ($this->renderDropdown($item['items'], $panes)) {
+                if ($this->renderDropdown($n, $item['items'], $panes)) {
                     Html::addCssClass($headerOptions, 'active');
                 }
 
@@ -156,7 +168,7 @@ class Tabs extends Widget
                 $linkOptions['data-toggle'] = 'dropdown';
                 $header = Html::a($label, "#", $linkOptions) . "\n"
                     . Dropdown::widget(['items' => $item['items'], 'clientOptions' => false, 'view' => $this->getView()]);
-            } elseif (isset($item['content'])) {
+            } else {
                 $options = array_merge($this->itemOptions, ArrayHelper::getValue($item, 'options', []));
                 $options['id'] = ArrayHelper::getValue($options, 'id', $this->options['id'] . '-tab' . $n);
 
@@ -165,16 +177,24 @@ class Tabs extends Widget
                     Html::addCssClass($options, 'active');
                     Html::addCssClass($headerOptions, 'active');
                 }
-                $linkOptions['data-toggle'] = 'tab';
-                $header = Html::a($label, '#' . $options['id'], $linkOptions);
-                $panes[] = Html::tag('div', $item['content'], $options);
+
+                if (isset($item['url'])) {
+                    $header = Html::a($label, $item['url'], $linkOptions);
+                } else {
+                    $linkOptions['data-toggle'] = 'tab';
+                    $header = Html::a($label, '#' . $options['id'], $linkOptions);
+                }
+
+                if ($this->renderTabContent) {
+                    $panes[] = Html::tag('div', isset($item['content']) ? $item['content'] : '', $options);
+                }
             }
 
             $headers[] = Html::tag('li', $header, $headerOptions);
         }
 
-        return Html::tag('ul', implode("\n", $headers), $this->options) . "\n"
-        . Html::tag('div', implode("\n", $panes), ['class' => 'tab-content']);
+        return Html::tag('ul', implode("\n", $headers), $this->options)
+        . ($this->renderTabContent ? "\n" . Html::tag('div', implode("\n", $panes), ['class' => 'tab-content']) : '');
     }
 
     /**
@@ -183,7 +203,7 @@ class Tabs extends Widget
     protected function hasActiveTab()
     {
         foreach ($this->items as $item) {
-            if (isset($item['active']) && $item['active']===true) {
+            if (isset($item['active']) && $item['active'] === true) {
                 return true;
             }
         }
@@ -194,12 +214,13 @@ class Tabs extends Widget
     /**
      * Normalizes dropdown item options by removing tab specific keys `content` and `contentOptions`, and also
      * configure `panes` accordingly.
+     * @param string $itemNumber number of the item
      * @param array $items the dropdown items configuration.
      * @param array $panes the panes reference array.
      * @return boolean whether any of the dropdown items is `active` or not.
      * @throws InvalidConfigException
      */
-    protected function renderDropdown(&$items, &$panes)
+    protected function renderDropdown($itemNumber, &$items, &$panes)
     {
         $itemActive = false;
 
@@ -207,7 +228,7 @@ class Tabs extends Widget
             if (is_string($item)) {
                 continue;
             }
-            if (!isset($item['content'])) {
+            if (!array_key_exists('content', $item)) {
                 throw new InvalidConfigException("The 'content' option is required.");
             }
 
@@ -220,7 +241,7 @@ class Tabs extends Widget
                 $itemActive = true;
             }
 
-            $options['id'] = ArrayHelper::getValue($options, 'id', $this->options['id'] . '-dd-tab' . $n);
+            $options['id'] = ArrayHelper::getValue($options, 'id', $this->options['id'] . '-dd' . $itemNumber . '-tab' . $n);
             $item['url'] = '#' . $options['id'];
             $item['linkOptions']['data-toggle'] = 'tab';
 

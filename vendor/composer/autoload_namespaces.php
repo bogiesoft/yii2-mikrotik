@@ -11,7 +11,5 @@ return array(
     'PEAR2\\Console\\Color' => array($vendorDir . '/pear2/net_routeros/vendor/pear2/console_color/src'),
     'PEAR2\\Cache\\SHM' => array($vendorDir . '/pear2/cache_shm/src', $vendorDir . '/pear2/net_routeros/vendor/pear2/cache_shm/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
-    'Faker\\PHPUnit' => array($vendorDir . '/fzaninotto/faker/test'),
-    'Faker' => array($vendorDir . '/fzaninotto/faker/src'),
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
 );

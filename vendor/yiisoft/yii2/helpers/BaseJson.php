@@ -28,16 +28,31 @@ class BaseJson
      * represented in terms of a [[JsExpression]] object.
      * @param mixed $value the data to be encoded
      * @param integer $options the encoding options. For more details please refer to
-     * <http://www.php.net/manual/en/function.json-encode.php>.
+     * <http://www.php.net/manual/en/function.json-encode.php>. Default is `JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE`.
      * @return string the encoding result
      */
-    public static function encode($value, $options = 0)
+    public static function encode($value, $options = 320)
     {
         $expressions = [];
         $value = static::processData($value, $expressions, uniqid());
         $json = json_encode($value, $options);
 
         return empty($expressions) ? $json : strtr($json, $expressions);
+    }
+
+    /**
+     * Encodes the given value into a JSON string HTML-escaping entities so it is safe to be embedded in HTML code.
+     * The method enhances `json_encode()` by supporting JavaScript expressions.
+     * In particular, the method will not encode a JavaScript expression that is
+     * represented in terms of a [[JsExpression]] object.
+     *
+     * @param mixed $value the data to be encoded
+     * @return string the encoding result
+     * @since 2.0.4
+     */
+    public static function htmlEncode($value)
+    {
+        return static::encode($value, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS);
     }
 
     /**

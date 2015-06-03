@@ -159,17 +159,17 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      * An active attribute is one that is subject to validation in the current scenario.
      * The returned array should be in the following format:
      *
-     * ~~~
+     * ```php
      * [
      *     'scenario1' => ['attribute11', 'attribute12', ...],
      *     'scenario2' => ['attribute21', 'attribute22', ...],
      *     ...
      * ]
-     * ~~~
+     * ```
      *
      * By default, an active attribute is considered safe and can be massively assigned.
      * If an attribute should NOT be massively assigned (thus considered unsafe),
-     * please prefix the attribute with an exclamation character (e.g. '!rank').
+     * please prefix the attribute with an exclamation character (e.g. `'!rank'`).
      *
      * The default implementation of this method will return all scenarios found in the [[rules()]]
      * declaration. A special scenario named [[SCENARIO_DEFAULT]] will contain all attributes
@@ -216,9 +216,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
         }
 
         foreach ($scenarios as $scenario => $attributes) {
-            if (empty($attributes) && $scenario !== self::SCENARIO_DEFAULT) {
-                unset($scenarios[$scenario]);
-            } else {
+            if (!empty($attributes)) {
                 $scenarios[$scenario] = array_keys($attributes);
             }
         }
@@ -282,6 +280,26 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      * @see generateAttributeLabel()
      */
     public function attributeLabels()
+    {
+        return [];
+    }
+
+    /**
+     * Returns the attribute hints.
+     *
+     * Attribute hints are mainly used for display purpose. For example, given an attribute
+     * `isPublic`, we can declare a hint `Whether the post should be visible for not logged in users`,
+     * which provides user-friendly description of the attribute meaning and can be displayed to end users.
+     *
+     * Unlike label hint will not be generated, if its explicit declaration is omitted.
+     *
+     * Note, in order to inherit hints defined in the parent class, a child class needs to
+     * merge the parent hints with child hints using functions such as `array_merge()`.
+     *
+     * @return array attribute hints (name => hint)
+     * @since 2.0.4
+     */
+    public function attributeHints()
     {
         return [];
     }
@@ -488,6 +506,19 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
     }
 
     /**
+     * Returns the text hint for the specified attribute.
+     * @param string $attribute the attribute name
+     * @return string the attribute hint
+     * @see attributeHints()
+     * @since 2.0.4
+     */
+    public function getAttributeHint($attribute)
+    {
+        $hints = $this->attributeHints();
+        return isset($hints[$attribute]) ? $hints[$attribute] : '';
+    }
+
+    /**
      * Returns a value indicating whether there is any validation error.
      * @param string|null $attribute attribute name. Use null to check all attributes.
      * @return boolean whether there is any error.
@@ -572,6 +603,27 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
     public function addError($attribute, $error = '')
     {
         $this->_errors[$attribute][] = $error;
+    }
+
+    /**
+     * Adds a list of errors.
+     * @param array $items a list of errors. The array keys must be attribute names.
+     * The array values should be error messages. If an attribute has multiple errors,
+     * these errors must be given in terms of an array.
+     * You may use the result of [[getErrors()]] as the value for this parameter.
+     * @since 2.0.2
+     */
+    public function addErrors(array $items)
+    {
+        foreach ($items as $attribute => $errors) {
+            if (is_array($errors)) {
+                foreach($errors as $error) {
+                    $this->addError($attribute, $error);
+                }
+            } else {
+                $this->addError($attribute, $errors);
+            }
+        }
     }
 
     /**
@@ -740,7 +792,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
     public function load($data, $formName = null)
     {
         $scope = $formName === null ? $this->formName() : $formName;
-        if ($scope == '' && !empty($data)) {
+        if ($scope === '' && !empty($data)) {
             $this->setAttributes($data);
 
             return true;
@@ -763,25 +815,32 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      * @param array $models the models to be populated. Note that all models should have the same class.
      * @param array $data the data array. This is usually `$_POST` or `$_GET`, but can also be any valid array
      * supplied by end user.
-     * @return boolean whether the model is successfully populated with some data.
+     * @param string $formName the form name to be used for loading the data into the models.
+     * If not set, it will use the [[formName()]] value of the first model in `$models`.
+     * This parameter is available since version 2.0.1.
+     * @return boolean whether at least one of the models is successfully populated.
      */
-    public static function loadMultiple($models, $data)
+    public static function loadMultiple($models, $data, $formName = null)
     {
-        /* @var $model Model */
-        $model = reset($models);
-        if ($model === false) {
-            return false;
+        if ($formName === null) {
+            /* @var $first Model */
+            $first = reset($models);
+            if ($first === false) {
+                return false;
+            }
+            $formName = $first->formName();
         }
+
         $success = false;
-        $scope = $model->formName();
         foreach ($models as $i => $model) {
-            if ($scope == '') {
-                if (isset($data[$i])) {
-                    $model->setAttributes($data[$i]);
+            /* @var $model Model */
+            if ($formName == '') {
+                if (!empty($data[$i])) {
+                    $model->load($data[$i], '');
                     $success = true;
                 }
-            } elseif (isset($data[$scope][$i])) {
-                $model->setAttributes($data[$scope][$i]);
+            } elseif (!empty($data[$formName][$i])) {
+                $model->load($data[$formName][$i], '');
                 $success = true;
             }
         }
@@ -841,8 +900,8 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      *     'email',
      *     'firstName' => 'first_name',
      *     'lastName' => 'last_name',
-     *     'fullName' => function () {
-     *         return $this->first_name . ' ' . $this->last_name;
+     *     'fullName' => function ($model) {
+     *         return $model->first_name . ' ' . $model->last_name;
      *     },
      * ];
      * ```

@@ -62,7 +62,7 @@ class RegularExpressionValidator extends Validator
     /**
      * @inheritdoc
      */
-    public function clientValidateAttribute($object, $attribute, $view)
+    public function clientValidateAttribute($model, $attribute, $view)
     {
         $pattern = $this->pattern;
         $pattern = preg_replace('/\\\\x\{?([0-9a-fA-F]+)\}?/', '\u$1', $pattern);
@@ -82,7 +82,7 @@ class RegularExpressionValidator extends Validator
             'pattern' => new JsExpression($pattern),
             'not' => $this->not,
             'message' => Yii::$app->getI18n()->format($this->message, [
-                'attribute' => $object->getAttributeLabel($attribute),
+                'attribute' => $model->getAttributeLabel($attribute),
             ], Yii::$app->language),
         ];
         if ($this->skipOnEmpty) {
@@ -91,6 +91,6 @@ class RegularExpressionValidator extends Validator
 
         ValidationAsset::register($view);
 
-        return 'yii.validation.regularExpression(value, messages, ' . Json::encode($options) . ');';
+        return 'yii.validation.regularExpression(value, messages, ' . Json::htmlEncode($options) . ');';
     }
 }
