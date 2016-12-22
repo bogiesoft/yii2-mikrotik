@@ -194,6 +194,32 @@ class ComposerStaticInit11e4a30a5ccb08c70cdd86950fff56a9
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
+            'PEAR2\\Net\\Transmitter\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear2/net_transmitter/src',
+                1 => __DIR__ . '/..' . '/pear2/net_routeros/vendor/pear2/net_transmitter/src',
+            ),
+            'PEAR2\\Net\\RouterOS\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear2/net_routeros/src',
+            ),
+            'PEAR2\\Console\\CommandLine' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear2/console_commandline/src',
+            ),
+            'PEAR2\\Console\\Color\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear2/console_color/src',
+            ),
+            'PEAR2\\Console\\Color' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear2/net_routeros/vendor/pear2/console_color/src',
+            ),
+            'PEAR2\\Cache\\SHM' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear2/cache_shm/src',
+                1 => __DIR__ . '/..' . '/pear2/net_routeros/vendor/pear2/cache_shm/src',
+            ),
         ),
         'H' => 
         array (

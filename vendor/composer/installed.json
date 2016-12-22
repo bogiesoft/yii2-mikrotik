@@ -3102,5 +3102,303 @@
             "functional testing",
             "unit testing"
         ]
+    },
+    {
+        "name": "pear2/cache_shm",
+        "version": "0.1.3",
+        "version_normalized": "0.1.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear2/Cache_SHM.git",
+            "reference": "fa0f3e753a1ff9d5b583dff1ddb299dc67b5921d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear2/Cache_SHM/zipball/fa0f3e753a1ff9d5b583dff1ddb299dc67b5921d",
+            "reference": "fa0f3e753a1ff9d5b583dff1ddb299dc67b5921d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "suggest": {
+            "ext-apc": ">=3.0.13",
+            "ext-wincache": ">=1.1.0"
+        },
+        "time": "2014-11-04 13:02:07",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PEAR2\\Cache\\SHM": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Vasil Rangelov",
+                "email": "boen.robot@gmail.com",
+                "role": "lead"
+            }
+        ],
+        "description": "Wrapper for shared memory and locking functionality across different PHP extensions.",
+        "homepage": "http://pear2.github.com/Cache_SHM/",
+        "keywords": [
+            "abstraction",
+            "apc",
+            "cache",
+            "caching",
+            "lock",
+            "locking",
+            "pear2",
+            "shm",
+            "wincache"
+        ]
+    },
+    {
+        "name": "pear2/console_color",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear2/Console_Color.git",
+            "reference": "97e38d21ffd5ed32b65eae2936f5223d2c43d52c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear2/Console_Color/zipball/97e38d21ffd5ed32b65eae2936f5223d2c43d52c",
+            "reference": "97e38d21ffd5ed32b65eae2936f5223d2c43d52c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2014-03-02 13:19:18",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PEAR2\\Console\\Color\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Vasil Rangelov",
+                "email": "boen.robot@gmail.com",
+                "role": "helper"
+            },
+            {
+                "name": "Ivo Nascimento",
+                "email": "ivo@o8o.com.br",
+                "role": "lead"
+            }
+        ],
+        "description": "Genetaror for ANSI color escape sequences.",
+        "homepage": "http://pear2.github.com/Console_Color/",
+        "keywords": [
+            "ansi",
+            "cli",
+            "color",
+            "console",
+            "generator",
+            "pear2"
+        ]
+    },
+    {
+        "name": "pear2/net_transmitter",
+        "version": "1.0.0b1",
+        "version_normalized": "1.0.0.0-beta1",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear2/Net_Transmitter.git",
+            "reference": "461564b18b7245f05dea80d943d2b87eb6a5de5e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear2/Net_Transmitter/zipball/461564b18b7245f05dea80d943d2b87eb6a5de5e",
+            "reference": "461564b18b7245f05dea80d943d2b87eb6a5de5e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "@stable"
+        },
+        "suggest": {
+            "ext-apc": "This, APCu or Wincache is required for persistent connections.",
+            "ext-apcu": "This, APC or Wincache is required for persistent connections.",
+            "ext-openssl": "Enables encrypted connections.",
+            "ext-wincache": "This, APC or APCu is required for persistent connections. Reccomended for Windows.",
+            "pear2/cache_shm": "Enables persistent connections"
+        },
+        "time": "2016-11-07 02:15:19",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PEAR2\\Net\\Transmitter\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Vasil Rangelov",
+                "email": "boen.robot@gmail.com",
+                "role": "lead"
+            }
+        ],
+        "description": "A stream wrapper that ensures data integrity. Particularly useful for sockets.",
+        "homepage": "http://pear2.github.com/Net_Transmitter/",
+        "keywords": [
+            "Socket",
+            "integrity",
+            "network",
+            "networking",
+            "package",
+            "pear2",
+            "sockets"
+        ]
+    },
+    {
+        "name": "pear2/net_routeros",
+        "version": "1.0.0b5",
+        "version_normalized": "1.0.0.0-beta5",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear2/Net_RouterOS.git",
+            "reference": "db24b8c4cd63d593dc8387987a954926d96cafb8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear2/Net_RouterOS/zipball/db24b8c4cd63d593dc8387987a954926d96cafb8",
+            "reference": "db24b8c4cd63d593dc8387987a954926d96cafb8",
+            "shasum": ""
+        },
+        "require": {
+            "pear2/net_transmitter": ">=1.0.0a5",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "pear2/cache_shm": "dev-develop",
+            "pear2/console_color": "dev-develop",
+            "pear2/console_commandline": "dev-master",
+            "phpunit/phpunit": "@stable",
+            "squizlabs/php_codesniffer": "@stable"
+        },
+        "suggest": {
+            "ext-apc": "This or Wincache is required for persistent connections.",
+            "ext-openssl": "Enables encrypted connections.",
+            "ext-wincache": "This or APC is required for persistent connections. Reccomended instead of APC on Windows.",
+            "pear2/cache_shm": "Enables persistent connections.",
+            "pear2/console_color": "Enables colors in the console",
+            "pear2/console_commandline": "Enables the console"
+        },
+        "time": "2014-11-04 12:52:46",
+        "bin": [
+            "scripts/roscon.php"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PEAR2\\Net\\RouterOS\\": "src/",
+                "PEAR2\\Net\\Transmitter\\": "vendor/pear2/net_transmitter/src/",
+                "PEAR2\\Cache\\SHM": "vendor/pear2/cache_shm/src/",
+                "PEAR2\\Console\\Color": "vendor/pear2/console_color/src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Vasil Rangelov",
+                "email": "boen.robot@gmail.com",
+                "role": "lead"
+            }
+        ],
+        "description": "This package allows you to read and write information from a RouterOS host using MikroTik's RouterOS API.",
+        "homepage": "http://pear2.github.com/Net_RouterOS/",
+        "keywords": [
+            "api",
+            "mikrotik",
+            "package",
+            "pear2",
+            "router",
+            "routeros"
+        ]
+    },
+    {
+        "name": "pear2/console_commandline",
+        "version": "0.2.2",
+        "version_normalized": "0.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear2/Console_CommandLine.git",
+            "reference": "0f4e219865e16425a2a1bed6fe307e00b992644d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear2/Console_CommandLine/zipball/0f4e219865e16425a2a1bed6fe307e00b992644d",
+            "reference": "0f4e219865e16425a2a1bed6fe307e00b992644d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "suggest": {
+            "ext-dom": "Required when parsing definitions from an XML file"
+        },
+        "time": "2016-11-09 00:10:54",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PEAR2\\Console\\CommandLine": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Vasil Rangelov",
+                "email": "boen.robot@gmail.com",
+                "role": "helper"
+            },
+            {
+                "name": "David JEAN LOUIS",
+                "email": "izi@php.net",
+                "role": "lead"
+            },
+            {
+                "name": "Brett Bieber",
+                "email": "saltybeagle@php.net",
+                "role": "helper"
+            }
+        ],
+        "description": "Full featured package for managing command-line applications.",
+        "homepage": "http://pear2.php.net/PEAR2_Console_CommandLine",
+        "keywords": [
+            "arguments",
+            "cli",
+            "commandline",
+            "console",
+            "parser",
+            "pear2"
+        ]
     }
 ]
