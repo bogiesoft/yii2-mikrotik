@@ -33,9 +33,10 @@ REQUIREMENTS
 INSTALLATION
 ------------
 
-### Install from github repo
+### Install from github repo and update composer packages
 
-git clone https://github.com/arydeoblo/yii2-mikrotik.git.
+- git clone https://github.com/arydeoblo/yii2-mikrotik.git.
+- composer update
 
 BASIC EXAMPLE USAGE
 -------------------
